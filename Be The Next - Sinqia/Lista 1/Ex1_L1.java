@@ -16,9 +16,10 @@ public class Ex1_L1 {
         double temperaturaReaumur = temperaturaCelcius * 0.8;
 
 
-        System.out.println("A temperatura em Kelvin será " + temperaturaKelvin);
-        System.out.println("A temperatura em Fahrenheit será " + temperaturaFahrenheit);
-        System.out.println("A temperatura em Rankine será " + temperaturaRankine);
-        System.out.println("A temperatura em Reaumur será " + temperaturaReaumur);
+
+        System.out.printf("A temperatura em Kelvin será %f \n", temperaturaKelvin);
+        System.out.printf("A temperatura em Fahrenheit será %f \n", temperaturaFahrenheit);
+        System.out.printf("A temperatura em Rankine será %f \n", temperaturaRankine);
+        System.out.printf("A temperatura em Reaumur será %f \n", temperaturaReaumur);
     }
 }
