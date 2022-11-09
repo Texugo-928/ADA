@@ -38,7 +38,12 @@ public class Provao {
                 System.out.printf("A temperatura de número %d informada foi %f Celcius e ", f, temperaturasIniciais[i]);
                 System.out.printf("a temperatura resultante foi %f Celcius \n", temperaturasIniciais[i]);
             }
+            double soma = 0;
 
+            for (int i = 0; i < temperaturasIniciais.length; i++) {
+                soma += temperaturasIniciais[i];
+            }
+            System.out.printf("A média das temperaturas tanto inicial quanto resultante é " + soma);
         }
         else if (escolha1 == 1 && escolha2 == 2) {
 
@@ -50,7 +55,7 @@ public class Provao {
                     System.out.printf("A temperatura de número %d informada foi %f Celcius e ", f, temperaturasIniciais[i]);
                     System.out.printf("a temperatura resultante foi %f Fahrenheit \n", temperaturasFahrenheit[i]);
                 }
-            }
+        }
             else if (escolha1 == 1 && escolha2 == 3) {
 
                 for (int i = 0; i < temperaturasIniciais.length; i++) {
@@ -81,6 +86,12 @@ public class Provao {
                 System.out.printf("A temperatura de número %d informada foi %f Fahrenheit e ", f, temperaturasIniciais[i]);
                 System.out.printf("a temperatura resultante foi %f Fahrenheit \n", temperaturasIniciais[i]);
             }
+            double soma = 0;
+
+            for (int i = 0; i < temperaturasIniciais.length; i++) {
+                soma += temperaturasIniciais[i];
+            }
+            System.out.printf("A média das temperaturas tanto inicial quanto resultante é " + soma);
         }
             else if (escolha1 == 2 && escolha2 == 3) {
 
