@@ -28,32 +28,40 @@ public class Bingo {
         //###################################################################################################
 
         if (opcao == 1) {
-            String[][] tabela = getTabela(scanner, quantidadeBolas, jogadores);
+            String[][] tabela = getCartelaTabela(scanner, CARTELA_INICIO, quantidadeBolas, jogadores);
 
-            listarCartelas(NICKNAME, jogadores, tabela);
+            String[][] tabelaAux = organizarTabela(NICKNAME, jogadores, tabela);
 
-            sortearManual(scanner, NICKNAME, CARTELA_INICIO, NUMENROS_ACERTADOS_INICIO, SCORE_PLAYER, quantidadeBolas, jogadores, tabela);
+            listarCartelas(NICKNAME, jogadores, tabelaAux);
+
+            sortearManual(scanner, NICKNAME, CARTELA_INICIO, NUMENROS_ACERTADOS_INICIO, SCORE_PLAYER, quantidadeBolas, jogadores, tabelaAux);
         }
         else if (opcao == 2) {
-            String[][] tabela = getTabela(scanner, quantidadeBolas, jogadores);
+            String[][] tabela = getCartelaTabela(scanner, CARTELA_INICIO, quantidadeBolas, jogadores);
 
-            listarCartelas(NICKNAME, jogadores, tabela);
+            String[][] tabelaAux = organizarTabela(NICKNAME, jogadores, tabela);
 
-            sortearRandom(scanner, NICKNAME, CARTELA_INICIO, NUMENROS_ACERTADOS_INICIO, SCORE_PLAYER, quantidadeBolas, jogadores, tabela);
+            listarCartelas(NICKNAME, jogadores, tabelaAux);
+
+            sortearRandom(scanner, NICKNAME, CARTELA_INICIO, NUMENROS_ACERTADOS_INICIO, SCORE_PLAYER, quantidadeBolas, jogadores, tabelaAux);
         }
         else if (opcao == 3) {
             String[][] tabela = getTabela(quantidadeBolas, jogadores);
 
-            listarCartelas(NICKNAME, jogadores, tabela);
+            String[][] tabelaAux = organizarTabela(NICKNAME, jogadores, tabela);
 
-            sortearManual(scanner, NICKNAME, CARTELA_INICIO, NUMENROS_ACERTADOS_INICIO, SCORE_PLAYER, quantidadeBolas, jogadores, tabela);
+            listarCartelas(NICKNAME, jogadores, tabelaAux);
+
+            sortearManual(scanner, NICKNAME, CARTELA_INICIO, NUMENROS_ACERTADOS_INICIO, SCORE_PLAYER, quantidadeBolas, jogadores, tabelaAux);
         }
         else {
             String[][] tabela = getTabela(quantidadeBolas, jogadores);
 
-            listarCartelas(NICKNAME, jogadores, tabela);
+            String[][] tabelaAux = organizarTabela(NICKNAME, jogadores, tabela);
 
-            sortearRandom(scanner, NICKNAME, CARTELA_INICIO, NUMENROS_ACERTADOS_INICIO, SCORE_PLAYER, quantidadeBolas, jogadores, tabela);
+            listarCartelas(NICKNAME, jogadores, tabelaAux);
+
+            sortearRandom(scanner, NICKNAME, CARTELA_INICIO, NUMENROS_ACERTADOS_INICIO, SCORE_PLAYER, quantidadeBolas, jogadores, tabelaAux);
         }
     }
 
@@ -378,19 +386,96 @@ public class Bingo {
         return bingo;
     }
 
-    private static void listarCartelas(int NICKNAME, String[] jogadores, String[][] tabela) {
-        System.out.println("Lista de cartelas geradas:\n");
+    private static void listarCartelas(int NICKNAME, String[] jogadores, String[][] tabelaAux) {
+        System.out.println("\nLista de cartelas geradas:\n");
         for (int i = 0; i < jogadores.length; i++) {
             int j = i + 1;
             String[] cartela = new String[6];
 
-            System.arraycopy(tabela[i], NICKNAME, cartela, 0, 6);
+            System.arraycopy(tabelaAux[i], NICKNAME, cartela, 0, 6);
 
             System.out.printf("Player %d: %s\n", j, Arrays.toString(cartela));
         }
         System.out.println("\n###################################################################################################\n");
     }
 
+    private static String[][] organizarTabela(int NICKNAME, String[] jogadores, String[][] tabela) {
+        Arrays.sort(jogadores);
+        String[][] tabelaAux = new String[jogadores.length][tabela[0].length];
+
+        for (int i = 0; i < jogadores.length; i++) {
+            for (int j = 0; j < jogadores.length; j++) {
+                if (jogadores[i].equals(tabela[j][NICKNAME])) {
+                    tabelaAux[i] = tabela[j];
+                }
+            }
+        }
+        return tabelaAux;
+    }
+
+    private static String[][] getCartelaTabela(Scanner scanner, int CARTELA_INICIO, int quantidadeBolas, String[] jogadores) {
+        System.out.printf("Informe os cinco valores distintos respeitando o intervalo de 1 à %d de cada cartela separando-os por vírgula (,)\n", quantidadeBolas);
+        System.out.println("Entendendo que cada as cartelas serão separadas por hífen (-).\n");
+        System.out.println("    Exemplo: \nEntrada: 1,2,3,4,5-6,7,8,9,10 => \n    Catela 1 = [1, 2, 3, 4, 5]\n    Cartela 2 = [6, 7, 8, 9, 10]");
+
+        String entradaCartelas = scanner.next();
+        String[] cartelas = entradaCartelas.split("-");
+        String[][] tabelaAux = new String[jogadores.length][5];
+        String[][] tabela = new String[jogadores.length][];
+
+        for (int i = 0; i < jogadores.length; i++) {
+            if (i < cartelas.length) {
+                String[] cartelaAux = cartelas[i].split(",");
+
+                System.arraycopy(cartelaAux, 0, tabelaAux[i], 0, 5);
+            }
+            else {
+                tabelaAux[i] = new String[]{"0", "0", "0", "0", "0"};
+            }
+        }
+
+        for (int j = 0; j < jogadores.length; j++) {
+            String nickname = jogadores[j];
+
+            tabela[j] = new String[]{nickname, tabelaAux[j][0],
+                    tabelaAux[j][1], tabelaAux[j][2],
+                    tabelaAux[j][3], tabelaAux[j][4], "-", "0", "0", "0", "0", "0", "-", "0", "-"};
+        }
+
+        for (int k = 0; k < jogadores.length; k++) {
+            int[] cartela = new int[5];
+
+            for (int l = 0; l < 5; l++) {
+                cartela[l] = Integer.parseInt(tabela[k][(l + CARTELA_INICIO)]);
+            }
+
+            boolean validacaoCartela = validarCartela(cartela[0], cartela[1], cartela[2], cartela[3], cartela[4], quantidadeBolas);
+
+            while (validacaoCartela) {
+                System.out.printf("\nA cartela do jogador %s é [%s,%s,%s,%s,%s]\n\n", tabela[k][0], tabela[k][1], tabela[k][2], tabela[k][3], tabela[k][4], tabela[k][5]);
+
+                System.out.println("Algum valor informado desrespeita as condições:");
+                System.out.println("(1) Cinco valores distintos; ou");
+                System.out.printf("(2) Valores respeitando o intervalo de 1 à %d \n", quantidadeBolas);
+
+                System.out.println("\nInforme, novamente, os cinco valores dessa cartela em específico separando-os por vírgula (,)");
+
+                String entradaCartela1 = scanner.next();
+                String[] cartela2 = entradaCartela1.split(",");
+                int[] cartela3 = new int[5];
+
+                for (int m = 0; m < 5; m++) {
+                    cartela3[m] = Integer.parseInt(cartela2[m]);
+                    tabela[k][(m + CARTELA_INICIO)] = cartela2[m];
+                }
+
+                validacaoCartela = validarCartela(cartela3[0], cartela3[1], cartela3[2], cartela3[3], cartela3[4], quantidadeBolas);
+            }
+        }
+        return tabela;
+    }
+
+     /*
     private static String[][] getTabela(Scanner scanner, int quantidadeBolas, String[] jogadores) {
         String[][] tabela = new String[jogadores.length][];
 
@@ -407,6 +492,7 @@ public class Bingo {
         }
         return tabela;
     }
+     */
 
     private static String[][] getTabela(int quantidadeBolas, String[] jogadores) {
         String[][] tabela = new String[jogadores.length][];
@@ -423,6 +509,7 @@ public class Bingo {
         return tabela;
     }
 
+    /*
     private static int[] getCartela(Scanner scanner, int quantidadeBolas) {
         System.out.println("\nInforme os cinco valores distintos respeitando o intervalo de 1 à " + quantidadeBolas);
         int a = scanner.nextInt();
@@ -447,6 +534,7 @@ public class Bingo {
         }
         return new int[]{a, b, c, d, e};
     }
+     */
 
     private static int[] getCartela(int quantidadeBolas) {
         Random random = new Random();
@@ -539,8 +627,6 @@ public class Bingo {
         String entradaPlayers = scanner.next();
         String[] players = entradaPlayers.split("-");
 
-        Arrays.sort(players);
-
         System.out.printf("\n***Os jogadores são: %s***\n", Arrays.toString(players));
         System.out.println("\n###################################################################################################\n");
 
@@ -548,6 +634,9 @@ public class Bingo {
     }
 
     private static int getQuantidadeBolas(Scanner scanner) {
+
+        // TODO Controlar o erro ao digitar algo diferente de um número.
+
         System.out.println("Antes de começarmos,\n  Informe a quantidade de bolas que o bingo possui...");
         int quantidadeBolas = scanner.nextInt();
         System.out.printf("\n***O jogo iniciará com %d bolas***\n", quantidadeBolas);
