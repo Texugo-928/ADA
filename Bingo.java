@@ -4,6 +4,8 @@ import java.util.Scanner;
 
 public class Bingo {
     public static void main(String[] args) {
+        // TODO implementar um sorteio onde cada round saem 5 bolas
+
         Scanner scanner = new Scanner(System.in);
 
         //###################################################################################################
@@ -65,7 +67,7 @@ public class Bingo {
         }
     }
 
-    private static void rankingGeral(int NICKNAME, int CARTELA_INICIO, int NUMENROS_ACERTADOS_INICIO, int SCORE_PLAYER, int round, String[] jogadores, int[] bolasEscolhidas, String[][] tabela) {
+    private static void rankingGeral(int NICKNAME, int CARTELA_INICIO, int NUMENROS_ACERTADOS_INICIO, int SCORE_PLAYER, int round, String[] jogadores, int[] bolasEscolhidas, String[][] tabelaAux) {
 
         System.out.println("##### RANKING GERAL #####");
         System.out.println("\n###################################################################################################\n");
@@ -76,17 +78,15 @@ public class Bingo {
 
         System.out.println("@@@  VENCEDORES  @@@");
         for (int i = 0; i < jogadores.length; i++) {
-            if (Integer.parseInt(tabela[i][SCORE_PLAYER]) == 5) {
+            if (Integer.parseInt(tabelaAux[i][SCORE_PLAYER]) == 5) {
                 int[] cartela = new int[5];
-
                 for (int k = 0; k < 5; k++) {
-                    cartela[k] = Integer.parseInt(tabela[i][(k+ CARTELA_INICIO)]);
+                    cartela[k] = Integer.parseInt(tabelaAux[i][(k + CARTELA_INICIO)]);
                 }
 
                 Arrays.sort(cartela);
 
-                System.out.println();
-                System.out.printf("%s com a cartela: \n", tabela[i][NICKNAME]);
+                System.out.printf("\n%s com a cartela: \n", tabelaAux[i][NICKNAME]);
                 System.out.println(Arrays.toString(cartela));
             }
         }
@@ -94,12 +94,12 @@ public class Bingo {
 
         for (int i = 5; i >= 0; i--) {
             for (int j = 0; j < jogadores.length; j++) {
-                if (Integer.parseInt(tabela[j][SCORE_PLAYER]) == i) {
+                if (Integer.parseInt(tabelaAux[j][SCORE_PLAYER]) == i) {
                     String[] numerosAcertados = new String[5];
 
-                    System.arraycopy(tabela[j], NUMENROS_ACERTADOS_INICIO, numerosAcertados, 0, 5);
+                    System.arraycopy(tabelaAux[j], NUMENROS_ACERTADOS_INICIO, numerosAcertados, 0, 5);
 
-                    System.out.printf("Pontuação do %s: %s \n", tabela[j][NICKNAME],  tabela[j][SCORE_PLAYER]);
+                    System.out.printf("Pontuação do %s: %s \n", tabelaAux[j][NICKNAME],  tabelaAux[j][SCORE_PLAYER]);
                     System.out.printf("%s\n\n", Arrays.toString(numerosAcertados));
                 }
             }
@@ -110,37 +110,43 @@ public class Bingo {
         System.out.println("\n###################################################################################################");
     }
 
-    private static void sortearRandom(Scanner scanner, int NICKNAME, int CARTELA_INICIO, int NUMENROS_ACERTADOS_INICIO, int SCORE_PLAYER, int quantidadeBolas, String[] jogadores, String[][] tabela) {
+    private static void sortearRandom(Scanner scanner, int NICKNAME, int CARTELA_INICIO, int NUMENROS_ACERTADOS_INICIO, int SCORE_PLAYER, int quantidadeBolas, String[] jogadores, String[][] tabelaAux) {
 
-        System.out.println("\nSorteio (RANDOM):\n");
+        System.out.println("Sorteio (RANDOM):\n");
 
         int[] bolasEscolhidas = new int[quantidadeBolas];
-        int bingo = validarBingo(SCORE_PLAYER, jogadores, tabela);
 
+        int bingo = validarBingo(SCORE_PLAYER, jogadores, tabelaAux);
         int round = 1;
         int freioDeMao = 0;
+
         final String CONTINUAR = "C";
         final String PARAR = "X";
+
         boolean verificador = true;
+        boolean encerramento = condicoesEncerramento(quantidadeBolas, bingo, round, freioDeMao);
+
         String pergunta;
 
         //###################################################################################################
 
-        while (condicoesEncerramento(quantidadeBolas, bingo, round, freioDeMao)) {
+        while (encerramento) {
             int i = round - 1;
             mensagemRoundValido(round);
             pergunta = scanner.next();
 
             if (pergunta.equalsIgnoreCase(CONTINUAR)) {
-                round(CARTELA_INICIO, NUMENROS_ACERTADOS_INICIO, SCORE_PLAYER, i, quantidadeBolas, jogadores, bolasEscolhidas, tabela);
-                listarRanking(NICKNAME, SCORE_PLAYER, jogadores, tabela);
+                round(CARTELA_INICIO, NUMENROS_ACERTADOS_INICIO, SCORE_PLAYER, i, quantidadeBolas, jogadores, bolasEscolhidas, tabelaAux);
+                listarRanking(NICKNAME, SCORE_PLAYER, jogadores, tabelaAux);
 
                 System.out.println("\n###################################################################################################\n");
-                bingo = validarBingo(SCORE_PLAYER, jogadores, tabela);
+                bingo = validarBingo(SCORE_PLAYER, jogadores, tabelaAux);
                 round++;
+                encerramento = condicoesEncerramento(quantidadeBolas, bingo, round, freioDeMao);
             }
             else if (pergunta.equalsIgnoreCase(PARAR)) {
                 freioDeMao = mensagemJogoEnterrompido();
+                encerramento = condicoesEncerramento(quantidadeBolas, bingo, round, freioDeMao);
             }
             else {
                 while (verificador) {
@@ -148,16 +154,18 @@ public class Bingo {
                     pergunta = scanner.next();
 
                     if (pergunta.equalsIgnoreCase(CONTINUAR)) {
-                        round(CARTELA_INICIO, NUMENROS_ACERTADOS_INICIO, SCORE_PLAYER, i, quantidadeBolas, jogadores, bolasEscolhidas, tabela);
-                        listarRanking(NICKNAME, SCORE_PLAYER, jogadores, tabela);
+                        round(CARTELA_INICIO, NUMENROS_ACERTADOS_INICIO, SCORE_PLAYER, i, quantidadeBolas, jogadores, bolasEscolhidas, tabelaAux);
+                        listarRanking(NICKNAME, SCORE_PLAYER, jogadores, tabelaAux);
 
                         System.out.println("\n###################################################################################################\n");
-                        bingo = validarBingo(SCORE_PLAYER, jogadores, tabela);
+                        bingo = validarBingo(SCORE_PLAYER, jogadores, tabelaAux);
                         round++;
+                        encerramento = condicoesEncerramento(quantidadeBolas, bingo, round, freioDeMao);
                         verificador = false;
                     }
                     else if (pergunta.equalsIgnoreCase(PARAR)) {
                         freioDeMao = mensagemJogoEnterrompido();
+                        encerramento = condicoesEncerramento(quantidadeBolas, bingo, round, freioDeMao);
                         verificador = false;
                     }
                 }
@@ -166,41 +174,46 @@ public class Bingo {
 
         //###################################################################################################
 
-        rankingGeral(NICKNAME, CARTELA_INICIO, NUMENROS_ACERTADOS_INICIO, SCORE_PLAYER, round, jogadores, bolasEscolhidas, tabela);
+        rankingGeral(NICKNAME, CARTELA_INICIO, NUMENROS_ACERTADOS_INICIO, SCORE_PLAYER, round, jogadores, bolasEscolhidas, tabelaAux);
     }
 
-    private static void sortearManual(Scanner scanner, int NICKNAME, int CARTELA_INICIO, int NUMENROS_ACERTADOS_INICIO, int SCORE_PLAYER, int quantidadeBolas, String[] jogadores, String[][] tabela) {
+    private static void sortearManual(Scanner scanner, int NICKNAME, int CARTELA_INICIO, int NUMENROS_ACERTADOS_INICIO, int SCORE_PLAYER, int quantidadeBolas, String[] jogadores, String[][] tabelaAux) {
 
-        System.out.println("\nSorteio (MANUAL):\n");
+        System.out.println("Sorteio (MANUAL):\n");
 
         int[] bolasEscolhidas = new int[quantidadeBolas];
-        int bingo = validarBingo(SCORE_PLAYER, jogadores, tabela);
 
+        int bingo = validarBingo(SCORE_PLAYER, jogadores, tabelaAux);
         int round = 1;
         int freioDeMao = 0;
+
         final String CONTINUAR = "C";
         final String PARAR = "X";
+
         boolean verificador = true;
+        boolean encerramento = condicoesEncerramento(quantidadeBolas, bingo, round, freioDeMao);
+
         String pergunta;
 
         //###################################################################################################
 
-        while (condicoesEncerramento(quantidadeBolas, bingo, round, freioDeMao)) {
+        while (encerramento) {
             int i = round - 1;
-
             mensagemRoundValido(round);
             pergunta = scanner.next();
 
             if (pergunta.equalsIgnoreCase(CONTINUAR)) {
-                round(scanner, CARTELA_INICIO, NUMENROS_ACERTADOS_INICIO, SCORE_PLAYER, i, quantidadeBolas, jogadores, bolasEscolhidas, tabela);
-                listarRanking(NICKNAME, SCORE_PLAYER, jogadores, tabela);
+                round(scanner, CARTELA_INICIO, NUMENROS_ACERTADOS_INICIO, SCORE_PLAYER, i, quantidadeBolas, jogadores, bolasEscolhidas, tabelaAux);
+                listarRanking(NICKNAME, SCORE_PLAYER, jogadores, tabelaAux);
 
                 System.out.println("\n###################################################################################################\n");
-                bingo = validarBingo(SCORE_PLAYER, jogadores, tabela);
+                bingo = validarBingo(SCORE_PLAYER, jogadores, tabelaAux);
                 round++;
+                encerramento = condicoesEncerramento(quantidadeBolas, bingo, round, freioDeMao);
             }
             else if (pergunta.equalsIgnoreCase(PARAR)) {
                 freioDeMao = mensagemJogoEnterrompido();
+                encerramento = condicoesEncerramento(quantidadeBolas, bingo, round, freioDeMao);
             }
             else {
                 while (verificador) {
@@ -208,16 +221,18 @@ public class Bingo {
                     pergunta = scanner.next();
 
                     if (pergunta.equalsIgnoreCase(CONTINUAR)) {
-                        round(scanner, CARTELA_INICIO, NUMENROS_ACERTADOS_INICIO, SCORE_PLAYER, i, quantidadeBolas, jogadores, bolasEscolhidas, tabela);
-                        listarRanking(NICKNAME, SCORE_PLAYER, jogadores, tabela);
+                        round(scanner, CARTELA_INICIO, NUMENROS_ACERTADOS_INICIO, SCORE_PLAYER, i, quantidadeBolas, jogadores, bolasEscolhidas, tabelaAux);
+                        listarRanking(NICKNAME, SCORE_PLAYER, jogadores, tabelaAux);
 
                         System.out.println("\n###################################################################################################\n");
-                        bingo = validarBingo(SCORE_PLAYER, jogadores, tabela);
+                        bingo = validarBingo(SCORE_PLAYER, jogadores, tabelaAux);
                         round++;
+                        encerramento = condicoesEncerramento(quantidadeBolas, bingo, round, freioDeMao);
                         verificador = false;
                     }
                     else if (pergunta.equalsIgnoreCase(PARAR)) {
                         freioDeMao = mensagemJogoEnterrompido();
+                        encerramento = condicoesEncerramento(quantidadeBolas, bingo, round, freioDeMao);
                         verificador = false;
                     }
                 }
@@ -226,14 +241,14 @@ public class Bingo {
 
         //###################################################################################################
 
-        rankingGeral(NICKNAME, CARTELA_INICIO, NUMENROS_ACERTADOS_INICIO, SCORE_PLAYER, round, jogadores, bolasEscolhidas, tabela);
+        rankingGeral(NICKNAME, CARTELA_INICIO, NUMENROS_ACERTADOS_INICIO, SCORE_PLAYER, round, jogadores, bolasEscolhidas, tabelaAux);
     }
 
     private static boolean condicoesEncerramento(int quantidadeBolas, int bingo, int round, int freioDeMao) {
         return (bingo == 0) && (freioDeMao == 0) && (round <= quantidadeBolas);
     }
 
-    private static void listarRanking(int NICKNAME, int SCORE_PLAYER, String[] jogadores, String[][] tabela) {
+    private static void listarRanking(int NICKNAME, int SCORE_PLAYER, String[] jogadores, String[][] tabelaAux) {
         int contador = 0;
 
         System.out.println("###################################################################################################\n");
@@ -242,33 +257,38 @@ public class Bingo {
 
         for (int i = 5; i >= 0; i--) {
             for (int j = 0; j < jogadores.length; j++) {
-                if ((Integer.parseInt(tabela[j][SCORE_PLAYER]) == i) && (contador < 3)) {
-                    System.out.printf("Pontuação do %s: %d \n", tabela[j][NICKNAME], Integer.parseInt(tabela[j][SCORE_PLAYER]));
+                if ((Integer.parseInt(tabelaAux[j][SCORE_PLAYER]) == i) && (contador < 3)) {
+                    System.out.printf("Pontuação do %s: %d \n", tabelaAux[j][NICKNAME], Integer.parseInt(tabelaAux[j][SCORE_PLAYER]));
                     contador++;
                 }
             }
         }
     }
 
-    private static void round(Scanner scanner, int CARTELA_INICIO, int NUMENROS_ACERTADOS_INICIO, int SCORE_PLAYER, int i, int quantidadeBolas, String[] jogadores, int[] bolasEscolhidas, String[][] tabela) {
+    private static void round(Scanner scanner, int CARTELA_INICIO, int NUMENROS_ACERTADOS_INICIO, int SCORE_PLAYER, int i, int quantidadeBolas, String[] jogadores, int[] bolasEscolhidas, String[][] tabelaAux) {
         int bolaSorteada;
         System.out.println("Informe o valor da bola escolhida que respeite o intervalo de 1 à " + quantidadeBolas);
         bolaSorteada = scanner.nextInt();
+        boolean validacaoRound = validarRound(bolaSorteada, quantidadeBolas);
+        boolean validacaoPertencimento = validarPertencimentoArray(bolaSorteada, bolasEscolhidas);
+
 
         //###################################################################################################
 
-        while (validarRound(bolaSorteada, quantidadeBolas)) {
+        while (validacaoRound) {
             System.out.println("O valor desrespeita o intervalo de 1 à " + quantidadeBolas);
             System.out.println("Informe o valor da bola escolhida que respeite o intervalo de 1 à " + quantidadeBolas + " novamente");
             bolaSorteada = scanner.nextInt();
+            validacaoRound = validarRound(bolaSorteada, quantidadeBolas);
         }
 
         //###################################################################################################
 
-        while (validarPertencimentoArray(bolaSorteada, bolasEscolhidas)) {
+        while (validacaoPertencimento) {
             System.out.println(Arrays.toString(bolasEscolhidas));
             System.out.println("Esse valor já foi informado previamenete, por favor informe outro número");
             bolaSorteada = scanner.nextInt();
+            validacaoPertencimento = validarPertencimentoArray(bolaSorteada, bolasEscolhidas);
         }
 
         //###################################################################################################
@@ -284,24 +304,23 @@ public class Bingo {
             int scorePlayer = 0;
 
             for (int k = 0; k < 5; k++) {
-                cartela[k] = Integer.parseInt(tabela[j][(k+ CARTELA_INICIO)]);
-                numerosAcertados[k] = Integer.parseInt(tabela[j][(k+ NUMENROS_ACERTADOS_INICIO)]);
-                scorePlayer = Integer.parseInt(tabela[j][SCORE_PLAYER]);
+                cartela[k] = Integer.parseInt(tabelaAux[j][(k+ CARTELA_INICIO)]);
+                numerosAcertados[k] = Integer.parseInt(tabelaAux[j][(k+ NUMENROS_ACERTADOS_INICIO)]);
+                scorePlayer = Integer.parseInt(tabelaAux[j][SCORE_PLAYER]);
             }
 
             if (validarPertencimentoArray(bolaSorteada, cartela)) {
                 numerosAcertados[scorePlayer] = bolaSorteada;
-                tabela[j][(scorePlayer+ NUMENROS_ACERTADOS_INICIO)] = String.valueOf(numerosAcertados[scorePlayer]);
+                tabelaAux[j][(scorePlayer+ NUMENROS_ACERTADOS_INICIO)] = String.valueOf(numerosAcertados[scorePlayer]);
                 scorePlayer += 1;
             }
 
-            tabela[j][SCORE_PLAYER] = String.valueOf(scorePlayer);
+            tabelaAux[j][SCORE_PLAYER] = String.valueOf(scorePlayer);
         }
     }
 
-    private static void round(int CARTELA_INICIO, int NUMENROS_ACERTADOS_INICIO, int SCORE_PLAYER, int i, int quantidadeBolas, String[] jogadores, int[] bolasEscolhidas, String[][] tabela) {
-        int bolaSorteada;
-        bolaSorteada = sortearBolaAutomatico(quantidadeBolas, bolasEscolhidas);
+    private static void round(int CARTELA_INICIO, int NUMENROS_ACERTADOS_INICIO, int SCORE_PLAYER, int i, int quantidadeBolas, String[] jogadores, int[] bolasEscolhidas, String[][] tabelaAux) {
+        int bolaSorteada = sortearBolaAutomatico(quantidadeBolas, bolasEscolhidas);
         System.out.printf("\n$$$ A bola sorteada foi %d $$$\n\n", bolaSorteada);
         bolasEscolhidas[i] = bolaSorteada;
 
@@ -313,18 +332,18 @@ public class Bingo {
             int scorePlayer = 0;
 
             for (int k = 0; k < 5; k++) {
-                cartela[k] = Integer.parseInt(tabela[j][(k+CARTELA_INICIO)]);
-                numerosAcertados[k] = Integer.parseInt(tabela[j][(k+NUMENROS_ACERTADOS_INICIO)]);
-                scorePlayer = Integer.parseInt(tabela[j][SCORE_PLAYER]);
+                cartela[k] = Integer.parseInt(tabelaAux[j][(k+CARTELA_INICIO)]);
+                numerosAcertados[k] = Integer.parseInt(tabelaAux[j][(k+NUMENROS_ACERTADOS_INICIO)]);
+                scorePlayer = Integer.parseInt(tabelaAux[j][SCORE_PLAYER]);
             }
 
             if (validarPertencimentoArray(bolaSorteada, cartela)) {
                 numerosAcertados[scorePlayer] = bolaSorteada;
-                tabela[j][(scorePlayer+NUMENROS_ACERTADOS_INICIO)] = String.valueOf(numerosAcertados[scorePlayer]);
+                tabelaAux[j][(scorePlayer+NUMENROS_ACERTADOS_INICIO)] = String.valueOf(numerosAcertados[scorePlayer]);
                 scorePlayer += 1;
             }
 
-            tabela[j][SCORE_PLAYER] = String.valueOf(scorePlayer);
+            tabelaAux[j][SCORE_PLAYER] = String.valueOf(scorePlayer);
         }
     }
 
@@ -332,6 +351,19 @@ public class Bingo {
         boolean validacaoNumeros = (bolaSorteada <= 0);
         boolean validacaoLimite = (bolaSorteada > quantidadeBolas);
         return (validacaoNumeros || validacaoLimite);
+    }
+
+    private static int sortearBolaAutomatico(int quantidadeBolas, int[] bolasEscolhidas) {
+        Random random = new Random();
+
+        int a = random.nextInt(1, (quantidadeBolas+1));
+        boolean validacaoPertencimento = validarPertencimentoArray(a, bolasEscolhidas);
+
+        while (validacaoPertencimento) {
+            a = random.nextInt(1, (quantidadeBolas+1));
+            validacaoPertencimento = validarPertencimentoArray(a, bolasEscolhidas);
+        }
+        return a;
     }
 
     private static boolean validarPertencimentoArray(int elemento, int[] array) {
@@ -344,18 +376,6 @@ public class Bingo {
             }
         }
         return verificador;
-    }
-
-    private static int sortearBolaAutomatico(int quantidadeBolas, int[] bolasEscolhidas) {
-        Random random = new Random();
-
-        int a = random.nextInt(1, (quantidadeBolas+1));
-
-        while (validarPertencimentoArray(a, bolasEscolhidas)) {
-            a = random.nextInt(1, (quantidadeBolas+1));
-        }
-
-        return a;
     }
 
     private static int mensagemJogoEnterrompido() {
@@ -376,10 +396,10 @@ public class Bingo {
         System.out.println("    X - Para parar o jogo");
     }
 
-    private static int validarBingo(int scoreJogador, String[] jogadores, String[][] tabela) {
+    private static int validarBingo(int scoreJogador, String[] jogadores, String[][] tabelaAux) {
         int bingo = 0;
         for (int i = 0; i < jogadores.length; i++) {
-            if (Integer.parseInt(tabela[i][scoreJogador]) == 5) {
+            if (Integer.parseInt(tabelaAux[i][scoreJogador]) == 5) {
                 bingo += 1;
             }
         }
@@ -387,7 +407,8 @@ public class Bingo {
     }
 
     private static void listarCartelas(int NICKNAME, String[] jogadores, String[][] tabelaAux) {
-        System.out.println("\nLista de cartelas geradas:\n");
+        System.out.println("\n###################################################################################################\n");
+        System.out.println("Lista de cartelas geradas:\n");
         for (int i = 0; i < jogadores.length; i++) {
             int j = i + 1;
             String[] cartela = new String[6];
@@ -435,10 +456,7 @@ public class Bingo {
         }
 
         for (int j = 0; j < jogadores.length; j++) {
-            String nickname = jogadores[j];
-
-            tabela[j] = new String[]{nickname, tabelaAux[j][0],
-                    tabelaAux[j][1], tabelaAux[j][2],
+            tabela[j] = new String[]{jogadores[j], tabelaAux[j][0], tabelaAux[j][1], tabelaAux[j][2],
                     tabelaAux[j][3], tabelaAux[j][4], "-", "0", "0", "0", "0", "0", "-", "0", "-"};
         }
 
@@ -452,7 +470,8 @@ public class Bingo {
             boolean validacaoCartela = validarCartela(cartela[0], cartela[1], cartela[2], cartela[3], cartela[4], quantidadeBolas);
 
             while (validacaoCartela) {
-                System.out.printf("\nA cartela do jogador %s é [%s,%s,%s,%s,%s]\n\n", tabela[k][0], tabela[k][1], tabela[k][2], tabela[k][3], tabela[k][4], tabela[k][5]);
+                System.out.println("\n###################################################################################################\n");
+                System.out.printf("A cartela do jogador %s é [%s,%s,%s,%s,%s]\n\n", tabela[k][0], tabela[k][1], tabela[k][2], tabela[k][3], tabela[k][4], tabela[k][5]);
 
                 System.out.println("Algum valor informado desrespeita as condições:");
                 System.out.println("(1) Cinco valores distintos; ou");
@@ -460,16 +479,16 @@ public class Bingo {
 
                 System.out.println("\nInforme, novamente, os cinco valores dessa cartela em específico separando-os por vírgula (,)");
 
-                String entradaCartela1 = scanner.next();
-                String[] cartela2 = entradaCartela1.split(",");
-                int[] cartela3 = new int[5];
+                String entradaCartelas1 = scanner.next();
+                String[] cartelas1 = entradaCartelas1.split(",");
+                int[] cartela1 = new int[5];
 
                 for (int m = 0; m < 5; m++) {
-                    cartela3[m] = Integer.parseInt(cartela2[m]);
-                    tabela[k][(m + CARTELA_INICIO)] = cartela2[m];
+                    cartela1[m] = Integer.parseInt(cartelas1[m]);
+                    tabela[k][(m + CARTELA_INICIO)] = cartelas1[m];
                 }
 
-                validacaoCartela = validarCartela(cartela3[0], cartela3[1], cartela3[2], cartela3[3], cartela3[4], quantidadeBolas);
+                validacaoCartela = validarCartela(cartela1[0], cartela1[1], cartela1[2], cartela1[3], cartela1[4], quantidadeBolas);
             }
         }
         return tabela;
@@ -480,12 +499,11 @@ public class Bingo {
         String[][] tabela = new String[jogadores.length][];
 
         for (int i = 0; i < jogadores.length; i++) {
-            String apelidos = jogadores[i];
-            System.out.printf("Preenchendo a cartela do jogador %s (MANUAL):\n", apelidos);
+            System.out.printf("Preenchendo a cartela do jogador %s (MANUAL):\n", jogadores[i]);
 
             int[] cartela = getCartela(scanner, quantidadeBolas);
 
-            tabela[i] = new String[] {apelidos, String.valueOf(cartela[0]),
+            tabela[i] = new String[] {jogadores[i], String.valueOf(cartela[0]),
                     String.valueOf(cartela[1]), String.valueOf(cartela[2]),
                     String.valueOf(cartela[3]), String.valueOf(cartela[4]), "-", "0", "0", "0", "0", "0", "-", "0", "-"};
             System.out.println("\n###################################################################################################\n");
@@ -498,11 +516,9 @@ public class Bingo {
         String[][] tabela = new String[jogadores.length][];
 
         for (int i = 0; i < jogadores.length; i++) {
-            String nickname = jogadores[i];
-
             int[] cartela = getCartela(quantidadeBolas);
 
-            tabela[i] = new String[] {nickname, String.valueOf(cartela[0]),
+            tabela[i] = new String[] {jogadores[i], String.valueOf(cartela[0]),
                     String.valueOf(cartela[1]), String.valueOf(cartela[2]),
                     String.valueOf(cartela[3]), String.valueOf(cartela[4]), "-", "0", "0", "0", "0", "0", "-", "0", "-"};
         }
