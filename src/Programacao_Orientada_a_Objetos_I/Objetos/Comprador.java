@@ -14,10 +14,12 @@ public class Comprador {
         this.sobrenome = sobrenome;
     }
 
-    public void comprar(Vendedor vendedor) {
+    public double comprar(Vendedor vendedor) {
         double valor = random.nextDouble(100, 1000);
         vendedor.vender(valor);
         this.valorCompras += valor;
+
+        return valor;
     }
 
     public String getNome() {

@@ -37,7 +37,7 @@ public class Prova_1 {
 
         criarCompradores(compradores);
 
-        dinamicaMercado(mercados, compradores);
+        String[][] compradorMercado = dinamicaMercado(mercados, compradores);
 
         Regulador regulador = new Regulador();
         regulador.aplicar(QUANTIDADE_COMPRADORES, mercados);
@@ -46,14 +46,9 @@ public class Prova_1 {
 
         top3Vendedores(mercados);
 
-        top3Compradores(compradores);
+        top3Compradores(compradores, compradorMercado);
 
         mercadoMaisLucrativo(mercados);
-
-
-        //Incluir vendedores dos outros mercados para vender com compradores
-
-        //Imprimir top 3 maiores compradores e dizer de qual mercado mais comprou
 
     }
 
@@ -75,28 +70,42 @@ public class Prova_1 {
         System.out.println("\n##################################################\n");
     }
 
-    private static void top3Compradores(Comprador[] compradores) {
+    private static void top3Compradores(Comprador[] compradores, String[][] compradorMercado) {
         System.out.println("\n#############################################\n");
         System.out.println("##########    Top 3 Compradores    ##########");
         System.out.println("\n#############################################\n");
 
         double[] totalComprasCompradores = criarArrayCompradoresCompras(compradores);
+        double[][] valorCompradorMercado = criarTabelaCompradorMercado(compradorMercado);
 
         int count = 0;
-        int length = totalComprasCompradores.length;
+        int length1 = totalComprasCompradores.length;
+        int length2 = valorCompradorMercado[0].length;
 
-        for (int j = length; j >= 0; j--) {
-            for (int i = 0; i < length; i++) {
+        for (int j = length1; j >= 0; j--) {
+            for (int i = 0; i < length1; i++) {
                 int somatorio = compararElementosArrayi(totalComprasCompradores[i], totalComprasCompradores);
 
                 if (somatorio == j && count < 3) {
                     String texto = "O comprador " + compradores[i].getNome() + " " + compradores[i].getSobrenome();
+                    String melhorMercado = "";
+                    double valorMelhorMercado = 0;
 
-                    System.out.printf("%d - %s gastou um total de R$%.2f em compras. \n", (count + 1), texto, totalComprasCompradores[i]);
+                    for (int k = 0; k < length2; k++) {
+                        boolean melhor = compararElementosArrayb(valorCompradorMercado[i][k], valorCompradorMercado[i]);
+
+                        if (melhor) {
+                            melhorMercado = "O mercado onde ele mais gastou foi o " + compradorMercado[0][(k + 1)] + " num total de";
+                            valorMelhorMercado = valorCompradorMercado[i][k];
+                        }
+                    }
+
+                    System.out.printf("%d - %s gastou um total de R$%.2f em compras. %s R$%.2f\n", (count + 1), texto, totalComprasCompradores[i], melhorMercado, valorMelhorMercado);
                     count++;
                 }
             }
         }
+
         System.out.println("\n#############################################\n");
     }
 
@@ -180,6 +189,18 @@ public class Prova_1 {
         return array;
     }
 
+    private static double[][] criarTabelaCompradorMercado(String[][] compradorMercado) {
+        double[][] tabela = new double[(compradorMercado.length - 1)][compradorMercado[0].length];
+
+        for (int i = 1; i < compradorMercado.length; i++) {
+            for (int j = 1; j < compradorMercado[0].length; j++) {
+                tabela[(i - 1)][(j - 1)] = Double.parseDouble(compradorMercado[i][j]);
+            }
+        }
+
+        return tabela;
+    }
+
     private static double[] criarArrayCompradoresCompras(Comprador[] compradores) {
         double[] array = new double[compradores.length];
 
@@ -257,7 +278,20 @@ public class Prova_1 {
         }
     }
 
-    private static void dinamicaMercado(Mercado[] mercados, Comprador[] compradores) {
+    private static String[][] dinamicaMercado(Mercado[] mercados, Comprador[] compradores) {
+        String[][] compradorMercado = new String[(compradores.length + 1)][(mercados.length + 1)];
+        compradorMercado[0][0] = "Comprador";
+        for (int l = 0; l < mercados.length; l++) {
+            Mercado mercado = mercados[l];
+
+            compradorMercado[0][(l + 1)] = mercado.getNome();
+        }
+        for (int m = 1; m < (compradores.length + 1); m++) {
+            for (int n = 1; n < (mercados.length + 1); n++) {
+                compradorMercado[m][n] = "0";
+            }
+        }
+
         for (int i = 0; i < mercados.length; i++) {
             Mercado mercado = mercados[i];
             Vendedor[] vendedores = mercado.getVendedores();
@@ -267,14 +301,23 @@ public class Prova_1 {
 
                 for (int k = 0; k < compradores.length; k++) {
                     Comprador comprador = compradores[k];
-                    comprador.comprar(vendedor);
+                    String nomeCompleto = comprador.getNome() + " " + comprador.getSobrenome();
+                    compradorMercado[(k + 1)][0] = nomeCompleto;
+
+                    double valor = comprador.comprar(vendedor);
+                    double atualizador = Double.parseDouble(compradorMercado[(k + 1)][i+1]);
+                    atualizador += valor;
+                    compradorMercado[(k + 1)][i+1] = String.valueOf(atualizador);
                 }
 
                 mercado.apurarVendas(vendedor);
             }
         }
+
+        return compradorMercado;
     }
 
+    /*
     private static void dinamicaMercado(Mercado[] mercados, Comprador[][] compradores) {
         for (int i = 0; i < mercados.length; i++) {
             Mercado mercado = mercados[i];
@@ -293,6 +336,7 @@ public class Prova_1 {
             }
         }
     }
+     */
 
     /*
     private static void dinamicaMercado(int QUANTIDADE_COMPRADORES, Mercado[] mercados) {
@@ -360,6 +404,7 @@ public class Prova_1 {
         }
     }
 
+    /*
     private static void criarCompradores (Comprador[][] compradores){
         for (int i = 0; i < compradores.length; i++) {
             Comprador[] compradoresAux = compradores[i];
@@ -367,4 +412,6 @@ public class Prova_1 {
             criarCompradores(compradoresAux);
         }
     }
+     */
+
 }
