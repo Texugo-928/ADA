@@ -17,14 +17,9 @@ public class Vendedor {
     public void anunciar() {
         String texto = "O vendedor " + this.nome + " " + this.sobrenome + " vendeu R$";
         String textoBonificacao = "e foi bonificado com R$";
-
-
-        if (this.valorBonificacao > 0) {
-            System.out.printf("%s%.2f %s%.2f. TOTAL: R$%.2f\n", texto, this.valorTotalVendas, textoBonificacao, this.valorBonificacao, (this.valorTotalVendas + this.valorBonificacao));
-        }
-        else {
-            System.out.printf("%s%.2f %s%.2f. TOTAL: R$%.2f\n", texto, this.valorTotalVendas, textoBonificacao, this.valorBonificacao, (this.valorTotalVendas + this.valorBonificacao));
-        }
+        System.out.printf("%s%.2f %s%.2f. TOTAL: R$%.2f\n", texto,
+                this.valorTotalVendas, textoBonificacao, this.valorBonificacao,
+                (this.valorTotalVendas + this.valorBonificacao));
     }
 
     public void vender(double valor) {
@@ -63,4 +58,5 @@ public class Vendedor {
     public String toString() {
         return this.nome + "" + this.sobrenome;
     }
+
 }

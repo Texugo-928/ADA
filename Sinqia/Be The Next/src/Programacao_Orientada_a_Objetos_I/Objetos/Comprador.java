@@ -18,7 +18,6 @@ public class Comprador {
         double valor = random.nextDouble(100, 1000);
         vendedor.vender(valor);
         this.valorCompras += valor;
-
         return valor;
     }
 
@@ -38,4 +37,5 @@ public class Comprador {
     public String toString() {
         return this.nome + "" + this.sobrenome;
     }
+
 }

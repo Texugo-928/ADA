@@ -18,7 +18,6 @@ public class Mercado {
 
     public void anunciar() {
         int length = this.getVendedores().length;
-
         String texto = "O mercado " + this.nome + " localizado em " + this.local;
         System.out.printf("%s, possui uma meta de R$%.2f por venda e possui a seguinte lista de vendedores: \n\n", texto, this.meta);
 
@@ -27,7 +26,6 @@ public class Mercado {
             System.out.printf("%d - ", (i+1));
             vendedor.anunciar();
             }
-
         System.out.printf("\nEsse mercado obteve um lucro de R$%.2f. \n", this.getTotalVendas());
     }
 
@@ -59,4 +57,5 @@ public class Mercado {
     public String toString() {
         return this.nome + "" + this.local;
     }
+
 }
