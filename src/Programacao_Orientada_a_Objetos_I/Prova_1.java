@@ -13,7 +13,9 @@ public class Prova_1 {
     private static final String[] sobrenomes = new String[]{"S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10"};
     public static final Random random = new Random();
 
-
+    // TODO Evitar repetições nos nomes dos vendedores e nos nomes dos compradores
+    // TODO Organizar os nomes dos vendedores por ordem alfabética na estatística dos mercados
+    // TODO Em caso de empate organizar o top 3 em ordem alfabética, tanto dos compradores quanto dos vendedores
 
     public static void main(String[] args) {
         final int QUANTIDADE_VENDEDORES = 10;
@@ -39,8 +41,8 @@ public class Prova_1 {
         preencherArrayCompradores(compradores);
 
         String[][] compradorMercado = dinamicaMercado(mercados, compradores);
-
         Regulador regulador = new Regulador();
+
         regulador.aplicar(QUANTIDADE_COMPRADORES, mercados);
 
         estatisticaMercados(mercados);

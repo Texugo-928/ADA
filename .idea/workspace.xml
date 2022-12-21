@@ -51,35 +51,7 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.Confirmation&quot;
   }
 }</component>
-  <component name="RunManager" selected="Application.Prova_1">
-    <configuration name="Exercicio_01" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="ALTERNATIVE_JRE_PATH" value="$USER_HOME$/.jdks/openjdk-19.0.1" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
-      <option name="MAIN_CLASS_NAME" value="Coding_Tank.Lista_1.Exercicio_01" />
-      <module name="Be The Next" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="Coding_Tank.Lista_1.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Exercicio_14" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Coding_Tank.Lista_1.Exercicio_14" />
-      <module name="Be The Next" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="Coding_Tank.Lista_1.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="Application.Prova_2_Bingo">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="Be The Next" />
@@ -93,6 +65,32 @@
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="Programacao_Orientada_a_Objetos_I.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Prova_1_Exercicio_1" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Logica_de_Programacao_I.Prova_1_Exercicio_1" />
+      <module name="Be The Next" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Logica_de_Programacao_I.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Prova_2_Bingo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Logica_de_Programacao_I.Prova_2_Bingo" />
+      <module name="Be The Next" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Logica_de_Programacao_I.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -115,11 +113,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Prova_2_Bingo" />
+        <item itemvalue="Application.Prova_1_Exercicio_1" />
         <item itemvalue="Application.Prova_1" />
         <item itemvalue="Application.teste" />
         <item itemvalue="Application.Main" />
-        <item itemvalue="Application.Exercicio_14" />
-        <item itemvalue="Application.Exercicio_01" />
       </list>
     </recent_temporary>
   </component>
