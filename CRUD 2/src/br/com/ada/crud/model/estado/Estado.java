@@ -10,7 +10,7 @@ public class Estado implements Serializable {
     private UUID id;
     private String nome;
     private String sigla;
-    private String pais;
+    private String paisSigla;
 
 
 
@@ -38,11 +38,11 @@ public class Estado implements Serializable {
         this.sigla = sigla.toUpperCase();
     }
 
-    public String getPais() {
-        return pais;
+    public String getPaisSigla() {
+        return paisSigla;
     }
 
-    public void setPais(String pais) {
-        this.pais = pais.toUpperCase();
+    public void setPaisSigla(String paisSigla) {
+        this.paisSigla = paisSigla.toUpperCase();
     }
 }

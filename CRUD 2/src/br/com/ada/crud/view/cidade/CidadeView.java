@@ -2,7 +2,9 @@ package br.com.ada.crud.view.cidade;
 
 import br.com.ada.crud.controller.cidade.CidadeController;
 import br.com.ada.crud.model.cidade.Cidade;
+import br.com.ada.crud.view.ViewGeral;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
@@ -54,8 +56,6 @@ public class CidadeView {
         Cidade cidade = controller.listar().get(numeroCidade - 1);
 
         atualizar(cidade);
-
-        //TODO: capturar erro ao passar um numero inválido
     }
 
     public void atualizar(Cidade cidade) {
@@ -105,13 +105,14 @@ public class CidadeView {
 
     }
 
-    public void exibirOpcoesCidade() {
+    public void exibirOpcoesCidade() throws IOException {
 
         System.out.println("Informe a opcao desejada:");
         System.out.println("1 - Cadastrar");
         System.out.println("2 - Listar");
         System.out.println("3 - Atualizar");
         System.out.println("4 - Deletar");
+        System.out.println("5 - Voltar ao Menu Inicial");
         System.out.println("0 - Sair");
 
         Integer opcao = scanner.nextInt();
@@ -127,6 +128,10 @@ public class CidadeView {
                 break;
             case 4:
                 deletar();
+                break;
+            case 5:
+                ViewGeral viewGeral = new ViewGeral();
+                viewGeral.exibirOpcoesGerais();
                 break;
             case 0:
                 System.exit(0);

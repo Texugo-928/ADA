@@ -54,9 +54,9 @@ public class EstadoXMLDao implements EstadoDAO {
             elementSigla.setTextContent(estado.getSigla());
             elementEstado.appendChild(elementSigla);
 
-            Element elementPais = document.createElement("pais");
-            elementPais.setTextContent(estado.getPais());
-            elementEstado.appendChild(elementPais);
+            Element elementPaisSigla = document.createElement("pais");
+            elementPaisSigla.setTextContent(estado.getPaisSigla());
+            elementEstado.appendChild(elementPaisSigla);
 
             File arquivo = new File(DIRETORIO_ESTADO, estado.getId().toString() + ".xml");
             try (FileOutputStream output = new FileOutputStream(arquivo)) {
@@ -92,13 +92,13 @@ public class EstadoXMLDao implements EstadoDAO {
                 Node elementId = elementEstado.getElementsByTagName("id").item(0);
                 Node elementNomeEstado = elementEstado.getElementsByTagName("nome_estado").item(0);
                 Node elementSigla = elementEstado.getElementsByTagName("sigla").item(0);
-                Node elementPais = elementEstado.getElementsByTagName("pais").item(0);
+                Node elementPaisSigla = elementEstado.getElementsByTagName("pais").item(0);
 
                 Estado estado = new Estado();
                 estado.setId(UUID.fromString(elementId.getTextContent()));
                 estado.setNome(elementNomeEstado.getTextContent());
                 estado.setSigla(elementSigla.getTextContent());
-                estado.setPais(elementPais.getTextContent());
+                estado.setPaisSigla(elementPaisSigla.getTextContent());
 
                 estados.add(estado);
             } catch (ParserConfigurationException | SAXException | IOException e) {
@@ -120,13 +120,13 @@ public class EstadoXMLDao implements EstadoDAO {
             Node elementId = elementEstado.getElementsByTagName("id").item(0);
             Node elementNomeEstado = elementEstado.getElementsByTagName("nome_estado").item(0);
             Node elementSigla = elementEstado.getElementsByTagName("sigla").item(0);
-            Node elementPais = elementEstado.getElementsByTagName("pais").item(0);
+            Node elementPaisSigla = elementEstado.getElementsByTagName("pais").item(0);
 
             Estado estado = new Estado();
             estado.setId(UUID.fromString(elementId.getTextContent()));
             estado.setNome(elementNomeEstado.getTextContent());
             estado.setSigla(elementSigla.getTextContent());
-            estado.setPais(elementPais.getTextContent());
+            estado.setPaisSigla(elementPaisSigla.getTextContent());
 
             return estado;
         } catch (ParserConfigurationException | SAXException | IOException e) {

@@ -2,7 +2,9 @@ package br.com.ada.crud.view.estado;
 
 import br.com.ada.crud.controller.estado.EstadoController;
 import br.com.ada.crud.model.estado.Estado;
+import br.com.ada.crud.view.ViewGeral;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
@@ -31,9 +33,9 @@ public class EstadoView {
         scanner.nextLine();
         estado.setSigla(sigla);
 
-        System.out.println("Informe o pais:");
-        String pais = scanner.next();
-        estado.setPais(pais);
+        System.out.println("Informe a sigla do pais:");
+        String paisSigla = scanner.next();
+        estado.setPaisSigla(paisSigla);
 
         controller.cadastrar(estado);
 
@@ -59,8 +61,6 @@ public class EstadoView {
         Estado estado = controller.listar().get(numeroEstado - 1);
 
         atualizar(estado);
-
-        //TODO: capturar erro ao passar um numero inválido
     }
 
     public void atualizar(Estado estado) {
@@ -77,9 +77,9 @@ public class EstadoView {
         scanner.nextLine();
         estado.setSigla(sigla);
 
-        System.out.println("Informe a versão atualizada do pais:");
-        String pais = scanner.next();
-        estado.setPais(pais);
+        System.out.println("Informe a versão atualizada da sigla do pais:");
+        String paisSigla = scanner.next();
+        estado.setPaisSigla(paisSigla);
 
         controller.atualizar(estado.getId(), estado);
 
@@ -110,19 +110,20 @@ public class EstadoView {
 
         String nome = estado.getNome();
         String sigla = estado.getSigla();
-        String pais = estado.getPais();
+        String pais = estado.getPaisSigla();
 
         System.out.println("Estado: " + nome + " - Sigla: " + sigla + " - Pais: " + pais);
 
     }
 
-    public void exibirOpcoesEstado() {
+    public void exibirOpcoesEstado() throws IOException {
 
         System.out.println("Informe a opcao desejada:");
         System.out.println("1 - Cadastrar");
         System.out.println("2 - Listar");
         System.out.println("3 - Atualizar");
         System.out.println("4 - Deletar");
+        System.out.println("5 - Voltar ao Menu Inicial");
         System.out.println("0 - Sair");
 
         Integer opcao = scanner.nextInt();
@@ -138,6 +139,10 @@ public class EstadoView {
                 break;
             case 4:
                 deletar();
+                break;
+            case 5:
+                ViewGeral viewGeral = new ViewGeral();
+                viewGeral.exibirOpcoesGerais();
                 break;
             case 0:
                 System.exit(0);

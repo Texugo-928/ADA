@@ -118,8 +118,6 @@ public class EstadoBinaryDAO implements EstadoDAO {
         if (estado != null) {
             File arquivo = new File(DIRETORIO_ESTADO, id.toString() + ".dat");
             arquivo.delete();
-
-            //TODO o delete não está funcionando
         }
 
         return estado;

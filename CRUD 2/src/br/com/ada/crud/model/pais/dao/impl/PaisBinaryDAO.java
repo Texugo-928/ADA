@@ -118,8 +118,6 @@ public class PaisBinaryDAO implements PaisDAO {
         if (pais != null) {
             File arquivo = new File(DIRETORIO_PAIS, id.toString() + ".dat");
             arquivo.delete();
-
-            //TODO o delete não está funcionando
         }
 
         return pais;

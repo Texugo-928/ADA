@@ -118,8 +118,6 @@ public class CidadeBinaryDAO implements CidadeDAO {
         if (cidade != null) {
             File arquivo = new File(DIRETORIO_CIDADE, id.toString() + ".dat");
             arquivo.delete();
-
-            //TODO o delete não está funcionando
         }
 
         return cidade;

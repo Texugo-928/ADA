@@ -2,7 +2,9 @@ package br.com.ada.crud.view.pais;
 
 import br.com.ada.crud.controller.pais.PaisController;
 import br.com.ada.crud.model.pais.Pais;
+import br.com.ada.crud.view.ViewGeral;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
@@ -54,8 +56,6 @@ public class PaisView {
         Pais pais = controller.listar().get(numeroPais - 1);
 
         atualizar(pais);
-
-        //TODO: capturar erro ao passar um numero inválido
     }
 
     public void atualizar(Pais pais) {
@@ -105,13 +105,14 @@ public class PaisView {
 
     }
 
-    public void exibirOpcoesPais() {
+    public void exibirOpcoesPais() throws IOException {
 
         System.out.println("Informe a opcao desejada:");
         System.out.println("1 - Cadastrar");
         System.out.println("2 - Listar");
         System.out.println("3 - Atualizar");
         System.out.println("4 - Deletar");
+        System.out.println("5 - Voltar ao Menu Inicial");
         System.out.println("0 - Sair");
 
         Integer opcao = scanner.nextInt();
@@ -127,6 +128,10 @@ public class PaisView {
                 break;
             case 4:
                 deletar();
+                break;
+            case 5:
+                ViewGeral viewGeral = new ViewGeral();
+                viewGeral.exibirOpcoesGerais();
                 break;
             case 0:
                 System.exit(0);
