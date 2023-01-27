@@ -113,6 +113,7 @@ public class EstadoBinaryDAO implements EstadoDAO {
 
     @Override
     public Estado deletar(UUID id) {
+        //TODO: nao esta deletando
         Estado estado = ler(id);
 
         if (estado != null) {

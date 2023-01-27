@@ -113,6 +113,7 @@ public class PaisBinaryDAO implements PaisDAO {
 
     @Override
     public Pais deletar(UUID id) {
+        //TODO: nao esta deletando
         Pais pais = ler(id);
 
         if (pais != null) {

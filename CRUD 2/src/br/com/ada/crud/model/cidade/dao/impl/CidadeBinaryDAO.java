@@ -113,6 +113,7 @@ public class CidadeBinaryDAO implements CidadeDAO {
 
     @Override
     public Cidade deletar(UUID id) {
+        //TODO: nao esta deletando
         Cidade cidade = ler(id);
 
         if (cidade != null) {

@@ -1,10 +1,14 @@
 package br.com.ada.crud.controller.cidade;
 
 import br.com.ada.crud.Configuracoes;
+import br.com.ada.crud.controller.arquivo.EscritorArquivo;
+import br.com.ada.crud.controller.arquivo.LeitorArquivo;
+import br.com.ada.crud.controller.arquivo.impl.binario.CidadeArquivoBinario;
+import br.com.ada.crud.controller.arquivo.impl.xml.CidadeArquivoXml;
+import br.com.ada.crud.model.cidade.Cidade;
 import br.com.ada.crud.model.cidade.dao.PersistenciaCidadeTipo;
 import br.com.ada.crud.model.cidade.dao.CidadeDAO;
-import br.com.ada.crud.model.cidade.dao.impl.CidadeBinaryDAO;
-import br.com.ada.crud.model.cidade.dao.impl.CidadeXMLDao;
+import br.com.ada.crud.model.cidade.dao.impl.CidadeArquivoDAO;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -24,14 +28,21 @@ public class CidadeDAOFactory {
         if (tipo == null) {
             carregarTipoPersistencia();
         }
-        CidadeDAO cidadeDAO = null;
+
+        EscritorArquivo<Cidade> escritor = null;
+        LeitorArquivo<Cidade> leitor = null;
+
         if (tipo == PersistenciaCidadeTipo.BINARIA) {
-            cidadeDAO = new CidadeBinaryDAO();
-        } else if (tipo == PersistenciaCidadeTipo.XML) {
-            cidadeDAO = new CidadeXMLDao();
+            escritor = new CidadeArquivoBinario();
+            leitor = new CidadeArquivoBinario();
         }
-        return cidadeDAO;
+        else if (tipo == PersistenciaCidadeTipo.XML) {
+            escritor = new CidadeArquivoXml();
+            leitor = new CidadeArquivoXml();
+        }
+        return new CidadeArquivoDAO(escritor, leitor);
     }
+
     private void carregarTipoPersistencia() {
         try {
             Properties properties = new Properties();

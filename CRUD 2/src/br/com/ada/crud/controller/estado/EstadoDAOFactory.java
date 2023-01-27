@@ -1,10 +1,14 @@
 package br.com.ada.crud.controller.estado;
 
 import br.com.ada.crud.Configuracoes;
+import br.com.ada.crud.controller.arquivo.EscritorArquivo;
+import br.com.ada.crud.controller.arquivo.LeitorArquivo;
+import br.com.ada.crud.controller.arquivo.impl.binario.EstadoArquivoBinario;
+import br.com.ada.crud.controller.arquivo.impl.xml.EstadoArquivoXml;
+import br.com.ada.crud.model.estado.Estado;
 import br.com.ada.crud.model.estado.dao.EstadoDAO;
 import br.com.ada.crud.model.estado.dao.PersistenciaEstadoTipo;
-import br.com.ada.crud.model.estado.dao.impl.EstadoBinaryDAO;
-import br.com.ada.crud.model.estado.dao.impl.EstadoXMLDao;
+import br.com.ada.crud.model.estado.dao.impl.EstadoArquivoDAO;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -24,13 +28,19 @@ public class EstadoDAOFactory {
         if (tipo == null) {
             carregarTipoPersistencia();
         }
-        EstadoDAO estadoDAO = null;
+
+        EscritorArquivo<Estado> escritor = null;
+        LeitorArquivo<Estado> leitor = null;
+
         if (tipo == PersistenciaEstadoTipo.BINARIA) {
-            estadoDAO = new EstadoBinaryDAO();
-        } else if (tipo == PersistenciaEstadoTipo.XML) {
-            estadoDAO = new EstadoXMLDao();
+            escritor = new EstadoArquivoBinario();
+            leitor = new EstadoArquivoBinario();
         }
-        return estadoDAO;
+        else if (tipo == PersistenciaEstadoTipo.XML) {
+            escritor = new EstadoArquivoXml();
+            leitor = new EstadoArquivoXml();
+        }
+        return new EstadoArquivoDAO(escritor, leitor);
     }
     private void carregarTipoPersistencia() {
         try {
