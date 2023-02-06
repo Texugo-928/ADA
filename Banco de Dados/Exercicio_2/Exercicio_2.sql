@@ -2,42 +2,42 @@ CREATE DATABASE Exercicio_2;
 
 USE Exercicio_2;
 
--- Cliente(cod_cliente, nome, sobrenome, endereco, complemento_endereco, telefone, email)
-CREATE TABLE Cliente(
-	cod_cliente INTEGER IDENTITY(1,1),
-	nome VARCHAR(20),
-	sobrenome VARCHAR(40),
-	endereco VARCHAR(20),
-	complemento_endereco VARCHAR(100),
-	telefone VARCHAR(14),
-	email VARCHAR(20),
+-- CLIENTE(cod_cliente, nome, sobrenome, endereco, complemento_endereco, telefone, email)
+CREATE TABLE cliente(
+	cod_cliente INTEGER IDENTITY(1,1) NOT NULL,
+	nome VARCHAR(20) NOT NULL,
+	sobrenome VARCHAR(40) NOT NULL,
+	endereco VARCHAR(40) NULL,
+	complemento_endereco VARCHAR(60) NULL,
+	telefone VARCHAR(14) NOT NULL,
+	email VARCHAR(20) NOT NULL,
 	CONSTRAINT PK_cod_cliente PRIMARY KEY (cod_cliente)
 );
 
--- Atendente(cod_atendente, nome, setor, data_admissao, gestor)
-CREATE TABLE Atendente(
-	cod_atendente INTEGER IDENTITY(1,1),
-	nome VARCHAR(20),
-	sobrenome VARCHAR(40),
-	setor VARCHAR(20),
-	data_admissao,
-	gestor VARCHAR(100),
+-- ATENDENTE(cod_atendente, nome, sobrenome, setor, data_admissao, gestor)
+CREATE TABLE atendente(
+	cod_atendente INTEGER IDENTITY(1,1) NOT NULL,
+	nome VARCHAR(20) NOT NULL,
+	sobrenome VARCHAR(40) NOT NULL,
+	setor VARCHAR(20) NOT NULL,
+	data_admissao DATE NOT NULL,
+	gestor VARCHAR(60) NOT NULL,
 	CONSTRAINT PK_cod_atendente PRIMARY KEY (cod_atendente)
 );
 
--- Atendimento(cod_atendimento, cod_cliente, cod_atendente, tipo_ligacao, descricao, data_abertura, data_fechamento, status)
-CREATE TABLE Atendimento(
-	cod_atendimento INTEGER IDENTITY(1,1),
-	cod_cliente INTEGER,
-	cod_atendente INTEGER,
-	tipo_ligacao,
-	descricao,
-	data_abertura,
-	data_fechamento,
-	status,
+-- ATENDIMENTO(cod_atendimento, cod_cliente, cod_atendente, tipo_ligacao, descricao, data_abertura, data_fechamento, status)
+CREATE TABLE atendimento(
+	cod_atendimento INTEGER IDENTITY(1,1) NOT NULL,
+	cod_cliente INTEGER NOT NULL,
+	cod_atendente INTEGER NOT NULL,
+	tipo_ligacao VARCHAR(40) NOT NULL,
+	descricao VARCHAR(200) NOT NULL,
+	data_abertura DATE NOT NULL,
+	data_fechamento DATE NULL,
+	status BIT DEFAULT 0,
 	CONSTRAINT PK_cod_atendimento PRIMARY KEY (cod_atendimento),
 	CONSTRAINT FK_cod_cliente FOREIGN KEY (cod_cliente)
-		REFERENCES Cliente (cod_cliente),
+		REFERENCES cliente (cod_cliente),
 	CONSTRAINT FK_cod_atendente FOREIGN KEY (cod_atendente)
-		REFERENCES Atendente (cod_atendente)
+		REFERENCES atendente (cod_atendente)
 );
