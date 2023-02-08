@@ -1,6 +1,6 @@
-CREATE DATABASE Exercicio_2;
+CREATE DATABASE exercicio_2;
 
-USE Exercicio_2;
+USE exercicio_2;
 
 -- CLIENTE(cod_cliente, nome, sobrenome, endereco, complemento_endereco, telefone, email)
 CREATE TABLE cliente(
