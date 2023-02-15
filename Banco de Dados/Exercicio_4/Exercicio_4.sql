@@ -1,3 +1,5 @@
+--Antes de executar essas queries, execute o arquivo Northwind.sql
+
 USE Northwind;
 
 --Visualizando as tabelas:
