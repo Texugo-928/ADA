@@ -1,4 +1,4 @@
-#Descrição do Projeto
+# Descrição do Projeto
 
 
   Esse projeto é um Sistema de Controle e Gerenciamento de Execução de Ordens de Serviço (OS) de uma oficina mecânica,
@@ -12,7 +12,7 @@ Esse valor é apresentado ao cliente junto com o valor de todas as peças necess
 Caso o cliente não autorize a execução do serviços, o mesmo deverá pagar o valor referente a revisões periódicas.
 Mas, se o cliente autorizar a execução do serviço, o valor informado na OS será a soma de todos os serviços e peças utilizados.
 
-#Queries SQL usadas:
+# Queries SQL usadas:
 
 	* Recuperações simples com SELECT Statement;
 	* Filtros com WHERE Statement;
