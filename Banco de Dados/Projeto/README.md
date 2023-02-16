@@ -1,7 +1,7 @@
 # Descrição do Projeto
 
 
-  Esse projeto é um Sistema de Controle e Gerenciamento de Execução de Ordens de Serviço (OS) de uma oficina mecânica,
+  Esse projeto foca na construção de um banco de dados de um Sistema de Controle e Gerenciamento de Execução de Ordens de Serviço (OS) para uma oficina mecânica,
 onde os clientes levam veículos à oficina mecânica para serem consertados ou para passarem por revisões periódicas.
 
   Cada veículo é designado a uma equipe de mecânicos que identifica os serviços a serem executados,
