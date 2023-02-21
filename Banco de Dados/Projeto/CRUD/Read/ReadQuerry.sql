@@ -14,17 +14,11 @@ SELECT * FROM Mecanico;
 SELECT * FROM Especialidade_Mecanico;
 
 --View Especialidades por mecânico
-CREATE VIEW vw_Especialidades_Mecanicos
-AS
-SELECT
-	mecanico.nome as nome_mecanico,
-	especialidade.nome as nome_especialidade
-	FROM mecanico
-	INNER JOIN especialidade_mecanico
-	ON especialidade_mecanico.cod_mecanico = mecanico.cod_mecanico
-	INNER JOIN especialidade
-	ON especialidade_mecanico.cod_especialidade = especialidade.cod_especialidade;
+CREATE VIEW vw_Especialidade_Mecanico AS
+	(SELECT M.nome AS nome_mecanico, E.nome AS nome_especialidade
+	FROM Mecanico M INNER JOIN Especialidade_Mecanico EM ON EM.cod_mecanico = M.cod_mecanico
+	LEFT JOIN Especialidade E ON EM.cod_especialidade = E.cod_especialidade);
 
-SELECT * FROM vw_Especialidades_Mecanicos;
+SELECT * FROM vw_Especialidade_Mecanico;
 
 
