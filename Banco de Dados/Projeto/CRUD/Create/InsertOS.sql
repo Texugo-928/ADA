@@ -4,8 +4,3 @@ USE projeto_mecanica;
 INSERT INTO OS VALUES
 	(1, 1, 1, 'A', '25-02-2023', '26-02-2023', 250.00, 'C'),
 	(1, 2, 1, 'A', '20-02-2004', '21-04-2004', 240.00, 'C')
-
-
-
---como zerar o cod_os?
---porque o null nao funciona?
