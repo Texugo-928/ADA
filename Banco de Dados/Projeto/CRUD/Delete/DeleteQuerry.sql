@@ -11,7 +11,15 @@ END
 --Deletando todas as linhas de uma tabela
 DELETE FROM Carro;
 DELETE FROM Cliente;
+DELETE FROM Equipe;
+DELETE FROM Especialidade;
+DELETE FROM Peca;
+DELETE FROM Servico;
 DELETE FROM OS;
+DELETE FROM OS_Servico;
+DELETE FROM OS_Peca;
+DELETE FROM Mecanico;
+DELETE FROM Especialidade_Mecanico;
 
 --Deletando linhas de uma tabela usando uma condição específica
 DELETE FROM Carro WHERE cod_carro > 10;

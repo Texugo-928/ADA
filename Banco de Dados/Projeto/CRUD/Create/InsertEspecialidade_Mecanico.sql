@@ -4,4 +4,8 @@ USE projeto_mecanica;
 INSERT INTO Especialidade_Mecanico VALUES
 	(1, 1),
 	(2, 1),
-	(3, 1)
+	(3, 1),
+	(1, 2),
+	(5, 2),
+	(2, 3),
+	(4, 4)

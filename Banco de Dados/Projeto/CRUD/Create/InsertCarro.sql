@@ -4,4 +4,6 @@ USE projeto_mecanica;
 INSERT INTO Carro VALUES
 	('Fiesta', 'AXR-7123'),
 	('Fusca', 'AZD-76F5'),
-	('HB20', 'ASX-7654')
+	('HB20', 'ASX-7654'),
+	('Sonata', 'BTX-4785'),
+	('Argo', 'BMW-5467')
